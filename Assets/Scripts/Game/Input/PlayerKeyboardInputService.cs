@@ -1,0 +1,110 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UniRx;
+using Unity.VisualScripting;
+using UnityEngine;
+using Zenject;
+
+namespace Input
+{
+    public class PlayerKeyboardInputService : IPlayerInputService
+    {
+        public ReactiveProperty<Vector2> Movement { get; } = new();
+        
+        public Action OnInteractionBegin { get; set; }
+        public Action OnInteractionEnd { get; set; }
+        
+        private IInputService _inputService;
+        private Config _config;
+        private bool _isMoving;
+        
+        public class Config
+        {
+            public (KeyCode Left, KeyCode Right) HorizontalAxisKeys = (KeyCode.A, KeyCode.D);
+            public (KeyCode Top, KeyCode Bottom) VerticalAxisKeys = (KeyCode.W, KeyCode.S);
+            
+            public IEnumerable<KeyCode> Keys
+            {
+                get
+                {
+                    yield return HorizontalAxisKeys.Left;
+                    yield return HorizontalAxisKeys.Right;
+                    yield return VerticalAxisKeys.Top;
+                    yield return VerticalAxisKeys.Bottom;
+                }
+            }
+        }
+        
+        [Inject]
+        public void Construct(IInputService inputService, Config config)
+        {
+            _inputService = inputService; 
+            _config = config;
+        }
+        
+        public void Enable()
+        {
+            if (_inputService != null)
+            {
+                _inputService.OnKeyPressed += OnKeyPressed;
+                _inputService.OnKeyReleased += OnKeyReleased;
+
+                foreach (var key in _config.Keys)
+                    _inputService.TrackKey(key);
+            }
+        }
+        
+        public void Disable()
+        {
+            if (_inputService != null)
+            {
+                _inputService.OnKeyPressed -= OnKeyPressed;
+                _inputService.OnKeyReleased -= OnKeyReleased;
+                
+                foreach (var key in _config.Keys)
+                    _inputService.UntrackKey(key);
+            }
+        }
+        
+        private void OnKeyPressed(KeyCode key)
+        {
+            var isMoving = IsMovingKey(key);
+            
+            if (isMoving && !_isMoving)
+            {
+                _isMoving = true;
+                OnInteractionBegin?.Invoke();
+            }
+        }
+
+        private void OnKeyReleased(KeyCode key)
+        {
+            var isMoving = IsMovingKey(key);
+
+            Vector2 movement = Vector2.zero;
+            
+            if (key == _config.HorizontalAxisKeys.Left)
+                movement = Vector2.left;
+            else if (key == _config.HorizontalAxisKeys.Right)
+                movement = Vector2.right;
+            else if (key == _config.VerticalAxisKeys.Top)
+                movement = Vector2.up;
+            else if (key == _config.VerticalAxisKeys.Bottom)
+                movement = Vector2.down;
+            
+            Movement.Value += movement;
+            
+            if (!isMoving && _isMoving)
+            {
+                _isMoving = false;
+                OnInteractionEnd?.Invoke();
+            }
+        }
+
+        private bool IsMovingKey(KeyCode key)
+        {
+            return _config.Keys.Contains(key);
+        }
+    }
+}
