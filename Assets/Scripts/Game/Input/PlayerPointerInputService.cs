@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Numerics;
 using UniRx;
 using Zenject;
 using Vector2 = UnityEngine.Vector2;
@@ -8,7 +7,7 @@ namespace Input
 {
     public class PlayerPointerInputService : IPlayerInputService
     {
-        public ReactiveProperty<Vector2> Movement { get; private set; }
+        public ReactiveProperty<Vector2> Movement { get; } = new();
         
         public Action OnInteractionBegin { get; set; }
         public Action OnInteractionEnd { get; set; }
