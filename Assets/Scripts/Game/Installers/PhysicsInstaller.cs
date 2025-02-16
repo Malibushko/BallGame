@@ -8,6 +8,11 @@ namespace Game.Installers
         public override void InstallBindings()
         {
             Container
+                .Bind<IPhysicsObject>()
+                .To<PhysicsObject>()
+                .AsTransient();
+            
+            Container
                 .BindInterfacesAndSelfTo<PhysicsService>()
                 .AsSingle()
                 .NonLazy();

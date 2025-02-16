@@ -1,23 +1,23 @@
 ﻿using Game.Player;
-using Input;
 using UnityEngine;
 using Zenject;
 
 namespace Game.Installers
 {
-    public class PlayerLocationInstaller : MonoInstaller
+    public class PlayerSpawner : MonoInstaller
     {
         [SerializeField] private Transform _spawnPoint;
         [SerializeField] private GameObject _playerPrefab;
 
         public override void InstallBindings()
         {           
-            var playerController = Container.InstantiatePrefabForComponent<PlayerController>(_playerPrefab);
-            playerController.transform.position = _spawnPoint.position;
+            var player = Container.InstantiatePrefabForComponent<Player.Player>(_playerPrefab);
+            player.transform.position = _spawnPoint.position;
             
             Container
-                .Bind<PlayerController>()
-                .FromInstance(playerController)
+                .Bind<IPlayer>()
+                .To<Player.Player>()
+                .FromInstance(player)
                 .AsSingle();
         }
     }

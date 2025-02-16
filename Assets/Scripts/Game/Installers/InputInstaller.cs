@@ -7,7 +7,9 @@ namespace Game.Installers
     {
         public override void InstallBindings()
         {
-            Container.Bind<IInputService>().To<InputService>().AsSingle();
+            Container
+                .BindInterfacesAndSelfTo<InputService>()
+                .AsSingle();
         }
     }
 }

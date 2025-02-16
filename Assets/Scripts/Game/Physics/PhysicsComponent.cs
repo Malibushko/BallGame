@@ -5,69 +5,33 @@ using Zenject;
 
 namespace Game.Physics
 {
-    public class PhysicsComponent : MonoBehaviour, IPhysicsObject
+    public class PhysicsComponent : MonoBehaviour
     {
-        [SerializeField] private bool _isStatic;
         [HideIf("_isStatic")]
-        [SerializeField] private float _restitution = 0.5f;
+        [SerializeField] float _restitution = 0.5f;
+        [SerializeField] bool _isStatic;
         
-        private IPhysicsService _physicsService;
-        private Rigidbody _rigidBody;
-        
-        public float Restitution => _restitution;
-        public Vector3 Velocity { get; set; }
-        public Vector3 Acceleration { get; set; }
-        public Vector3 Position {
-            get => Rigidbody ? _rigidBody.position : transform.position;
-            set
-            {
-                if (_rigidBody)
-                    _rigidBody.MovePosition(value);
-                else 
-                    transform.position = value;
-            }
-        }
-
-        public Rigidbody Rigidbody => _rigidBody;
-        public bool IsStatic => _isStatic;
-        
-        public Action<Collision> CollisionEnter { get; set; }
-        public Action<Collision> CollisionExit { get; set; }
+        private IPhysicsObject _physicsObject;
 
         [Inject]
-        public void Construct(IPhysicsService physics)
+        public void Construct(IPhysicsObject physicsObject)
         {
-            _physicsService = physics;
-        }
-
-        private void Awake()
-        {
-            _rigidBody = GetComponent<Rigidbody>();
-        }
-
-        public void ApplyForce(Vector3 force)
-        {
-            _physicsService.ApplyForce(this, force);
+            _physicsObject = physicsObject;
+            
+            _physicsObject.Restitution = _restitution;
+            _physicsObject.IsStatic = _isStatic;
+            
+            _physicsObject.Configure(gameObject);
         }
         
-        private void OnEnable()
+        private void OnCollisionEnter(Collision other)
         {
-            _physicsService?.Register(this);
+            _physicsObject.CollisionEnter?.Invoke(other);
         }
 
-        private void OnDisable()
+        private void OnCollisionExit(Collision other)
         {
-            _physicsService?.Unregister(this);
-        }
-
-        public void OnCollisionEnter(Collision other)
-        {
-            CollisionEnter?.Invoke(other);
-        }
-
-        public void OnCollisionExit(Collision other)
-        {
-            CollisionExit?.Invoke(other);
+            _physicsObject.CollisionExit?.Invoke(other);
         }
     }
 }

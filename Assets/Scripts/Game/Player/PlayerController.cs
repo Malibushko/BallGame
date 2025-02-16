@@ -1,33 +1,30 @@
-﻿using System;
-using Game.Physics;
+﻿using Game.Physics;
 using Input;
 using UnityEngine;
 using Zenject;
 
 namespace Game.Player
 {
-    [RequireComponent(typeof(PhysicsComponent))]
-    public class PlayerController : MonoBehaviour, IPlayerController
+    public class PlayerController : IPlayerController
     {
         private IPlayerInputService _input;
-        private PhysicsComponent _physics;
+        private IPhysicsObject _physics;
         
         [Inject]
-        public void Construct(IPlayerInputService input)
+        public void Construct(IPlayerInputService input, IPhysicsObject physics)
         {
             _input = input;
+            _physics = physics;
         }
-        
-        public void Enable()
+
+        public void Activate()
         {
-            _input.Enable();
             _input.OnInteractionBegin += OnInteractionBegin;
             _input.OnInteractionEnd += OnInteractionEnd;
         }
         
-        public void Disable()
+        public void Deactivate()
         {
-            _input.Disable();
             _input.OnInteractionBegin -= OnInteractionBegin;
             _input.OnInteractionEnd -= OnInteractionEnd;
         }
@@ -40,7 +37,7 @@ namespace Game.Player
         private void OnInteractionEnd()
         {
             if (_input.Movement.HasValue)
-                _physics.ApplyForce(_input.Movement.Value);
+                _physics.ApplyForce(_input.Movement.Value * 0.001f);
         }
     }
 }

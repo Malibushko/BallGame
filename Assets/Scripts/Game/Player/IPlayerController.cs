@@ -1,9 +1,8 @@
-﻿using UniRx;
-using UnityEngine;
+﻿using Infrastructure;
 
 namespace Game.Player
 {
-    public interface IPlayerController : IControlledService
+    public interface IPlayerController : IActivatableService
     {
     }
 }

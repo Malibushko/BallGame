@@ -42,7 +42,7 @@ namespace Input
             _config = config;
         }
         
-        public void Enable()
+        public void Activate()
         {
             if (_inputService != null)
             {
@@ -54,7 +54,7 @@ namespace Input
             }
         }
         
-        public void Disable()
+        public void Deactivate()
         {
             if (_inputService != null)
             {

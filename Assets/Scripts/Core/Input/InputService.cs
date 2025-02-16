@@ -64,7 +64,7 @@ namespace Input
         
         private void ProcessPointerInput()
         {
-            if (UnityEngine.Input.GetMouseButtonDown(MainMouseButtonIndex))
+            if (UnityEngine.Input.GetMouseButton(MainMouseButtonIndex))
             {
                 var currentMousePosition = UnityEngine.Input.mousePosition;
                 
