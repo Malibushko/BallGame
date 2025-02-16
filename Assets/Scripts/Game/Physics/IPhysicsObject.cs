@@ -19,6 +19,6 @@ namespace Game.Physics
         
         public void ApplyForce(Vector3 force);
 
-        public void Configure(GameObject owner);
+        public void Configure(Rigidbody target);
     }
 }

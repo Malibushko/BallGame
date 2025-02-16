@@ -8,22 +8,30 @@ using Zenject;
 
 namespace Game.Player
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class Player : MonoBehaviour, IPlayer
     {
-        public Vector3 Position => _physicsObject.Rigidbody.position;
-        public Quaternion Rotation => _physicsObject.Rigidbody.rotation;
-        public Vector3 Velocity => _physicsObject.Rigidbody.velocity;
-        
         private IPhysicsObject _physicsObject;
         private IActivatableService[] _services;
+        private Rigidbody _rigidbody;
+        
+        public Vector3 Position => transform.position;
+        public Quaternion Rotation => transform.rotation;
         
         [Inject]
-        public void Construct(IActivatableService[] activatableServices, IPhysicsObject physicsObject)
+        public void Construct(IActivatableService[] services, IPhysicsObject physicsObject)
         {
-            _services = activatableServices;
+            _services = services;
             _physicsObject = physicsObject;
         }
-        
+
+        private void Awake()
+        {
+            _rigidbody = GetComponent<Rigidbody>();
+            
+            _physicsObject.Configure(_rigidbody);
+        }
+
         private void OnEnable()
         {
             _services.ForEach(service => service.Activate());
@@ -32,6 +40,16 @@ namespace Game.Player
         private void OnDisable()
         {
             _services.ForEach(service => service.Deactivate());
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            _physicsObject.CollisionEnter?.Invoke(collision);
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            _physicsObject.CollisionExit?.Invoke(collision);
         }
     }
 }

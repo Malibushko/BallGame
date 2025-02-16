@@ -1,11 +1,9 @@
-﻿using UnityEngine;
+﻿using Infrastructure;
+using UnityEngine;
 
 namespace Game.Player
 {
-    public interface IPlayer
+    public interface IPlayer : ITransformParametersProvider
     {
-        public Vector3 Position { get; }
-        public Quaternion Rotation { get; }
-        public Vector3 Velocity { get; }
     }
 }

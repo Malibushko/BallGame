@@ -1,4 +1,5 @@
-﻿using Game.Physics;
+﻿using Game.Camera;
+using Game.Physics;
 using Input;
 using UnityEngine;
 using Zenject;
@@ -9,12 +10,18 @@ namespace Game.Player
     {
         private IPlayerInputService _input;
         private IPhysicsObject _physics;
+        private PlayerControllerConfig _config;
+        
+        private bool _isInteracting;
         
         [Inject]
-        public void Construct(IPlayerInputService input, IPhysicsObject physics)
+        public void Construct(IPlayerInputService input, 
+            IPhysicsObject physics,
+            PlayerControllerConfig config)
         {
             _input = input;
             _physics = physics;
+            _config = config;
         }
 
         public void Activate()
@@ -29,15 +36,21 @@ namespace Game.Player
             _input.OnInteractionEnd -= OnInteractionEnd;
         }
         
-        private void OnInteractionBegin()
+        private void OnInteractionBegin(Vector3 position)
         {
+            float distanceToPlayer = Vector3.Distance(position, _physics.Position);
             
+            if (distanceToPlayer < _config.MaxInteractionDistance)
+                _isInteracting = true;
         }
         
-        private void OnInteractionEnd()
+        private void OnInteractionEnd(Vector3 position)
         {
-            if (_input.Movement.HasValue)
-                _physics.ApplyForce(_input.Movement.Value * 0.001f);
+            if (_isInteracting && _input.Movement.HasValue)
+            {
+                var force = _input.Movement.Value * _config.Speed;
+                _physics.ApplyForce(force);
+            }
         }
     }
 }

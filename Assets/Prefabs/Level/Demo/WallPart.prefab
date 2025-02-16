@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 8039529266209133339}
   - component: {fileID: 2125103792818184334}
   - component: {fileID: 1694981830880581982}
-  - component: {fileID: 6411540698596606666}
   m_Layer: 0
   m_Name: WallPart
   m_TagString: Untagged
@@ -138,17 +137,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6411540698596606666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2933793285786347411}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7620382fdb7043c2ac8aa82d31ca3096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _restitution: 0.5
-  _isStatic: 1

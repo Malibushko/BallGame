@@ -95,7 +95,6 @@ GameObject:
   - component: {fileID: -3497767092797604569}
   - component: {fileID: 8870241576928765772}
   - component: {fileID: 3454225317576667980}
-  - component: {fileID: 1375846060731672616}
   - component: {fileID: 5089167237324308724}
   - component: {fileID: -126664201166167428}
   m_Layer: 0
@@ -130,7 +129,7 @@ Rigidbody:
   m_GameObject: {fileID: 5784506108616798291}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 0.3
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -187,20 +186,6 @@ MonoBehaviour:
   _installerPrefabs: []
   _autoRun: 1
   _kernel: {fileID: 0}
---- !u!114 &1375846060731672616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5784506108616798291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7620382fdb7043c2ac8aa82d31ca3096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _restitution: 0.5
-  _isStatic: 0
 --- !u!114 &5089167237324308724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ae5650c89f4bf5a59425f7269b6394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerControllerConfigPath: Configs/Player/PlayerControllerConfig
 --- !u!114 &-126664201166167428
 MonoBehaviour:
   m_ObjectHideFlags: 0

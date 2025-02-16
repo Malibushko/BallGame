@@ -7,9 +7,9 @@ namespace Input
 {
     public interface IPlayerInputService : IActivatableService
     {
-        public ReactiveProperty<Vector2> Movement { get; }
+        public ReactiveProperty<Vector3> Movement { get; }
         
-        public Action OnInteractionBegin { get; set; }
-        public Action OnInteractionEnd { get; set; }
+        public Action<Vector3> OnInteractionBegin { get; set; }
+        public Action<Vector3> OnInteractionEnd { get; set; }
     }
 }

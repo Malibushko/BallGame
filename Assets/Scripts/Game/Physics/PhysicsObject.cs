@@ -8,20 +8,12 @@ namespace Game.Physics
     {
         private IPhysicsService _physicsService;
         private Rigidbody _rigidBody;
-        private Transform _transform;
-        
         public float Restitution { get; set; }
         public Vector3 Velocity { get; set; }
         public Vector3 Acceleration { get; set; }
         public Vector3 Position {
-            get => Rigidbody ? _rigidBody.position : _transform.position;
-            set
-            {
-                if (_rigidBody)
-                    _rigidBody.MovePosition(value);
-                else 
-                    _transform.position = value;
-            }
+            get => _rigidBody.position;
+            set => _rigidBody.MovePosition(value);
         }
 
         public Rigidbody Rigidbody => _rigidBody;
@@ -41,10 +33,9 @@ namespace Game.Physics
             _physicsService.ApplyForce(this, force);
         }
 
-        public void Configure(GameObject owner)
+        public void Configure(Rigidbody target)
         {
-            _transform = owner.transform;
-            _rigidBody = owner.GetComponent<Rigidbody>();
+            _rigidBody = target;
         }
 
         public void Activate()
