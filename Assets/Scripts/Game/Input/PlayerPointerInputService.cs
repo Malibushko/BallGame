@@ -88,7 +88,8 @@ namespace Input
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                worldPosition = Vector3.ProjectOnPlane(hit.point, Vector3.up);
+                var worldPos = Vector3.ProjectOnPlane(hit.point, Vector3.up);
+                worldPosition = new Vector3(worldPos.x, 0, worldPos.z);
                 return true;
             }
             

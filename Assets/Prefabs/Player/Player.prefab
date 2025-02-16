@@ -131,7 +131,7 @@ Rigidbody:
   m_GameObject: {fileID: 5784506108616798291}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.3
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -144,11 +144,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 4
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!135 &8870241576928765772
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -201,6 +201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393d2a9548384563b52d8bea11e66550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isStatic: 0
+  _restitution: 1
 --- !u!114 &5089167237324308724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerControllerConfigPath: Configs/Player/PlayerControllerConfig
+  _playerCollisionConfigPath: Configs/Player/PlayerCollisionConfig
 --- !u!114 &-126664201166167428
 MonoBehaviour:
   m_ObjectHideFlags: 0

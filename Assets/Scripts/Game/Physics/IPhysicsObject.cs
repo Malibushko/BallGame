@@ -11,7 +11,6 @@ namespace Game.Physics
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
         public float Restitution { get; set; }
-        
         public Rigidbody Rigidbody { get; }
         public bool IsStatic { get; set; }
         
