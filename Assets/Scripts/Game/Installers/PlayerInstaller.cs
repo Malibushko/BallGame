@@ -17,20 +17,17 @@ namespace Game.Installers
         {
             IConfigsService configs = Container.Resolve<IConfigsService>();
             
-            Container
-                .Bind(typeof(IPlayerInputService), typeof(IActivatableService))
-                .To<PlayerPointerInputService>()
-                .AsSingle();
-            
-            Container.Bind(typeof(IPhysicsObject), typeof(IActivatableService))
-                .To<PhysicsObject>()
-                .AsSingle();
-            
             bool playerControllerConfigLoaded = configs.Load(_playerControllerConfigPath, out PlayerControllerConfig playerControllerConfig);
             Assert.IsTrue(playerControllerConfigLoaded);
-            
-            Container.Bind(typeof(IPlayerController), typeof(IActivatableService))
-                .To<PlayerController>()
+
+            Container.BindInterfacesAndSelfTo<PhysicsObject>()
+                .AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerPhysicsMovementService>()
+                .AsSingle();
+            Container
+                .BindInterfacesAndSelfTo<PlayerPointerInputService>()
+                .AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerController>()
                 .AsSingle()
                 .WithArguments(playerControllerConfig);
         }

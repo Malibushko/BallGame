@@ -16,6 +16,12 @@ namespace Game.Physics
             set => _rigidBody.MovePosition(value);
         }
 
+        public Quaternion Rotation
+        {
+            get => _rigidBody.rotation;
+            set => _rigidBody.MoveRotation(value);
+        }
+        
         public Rigidbody Rigidbody => _rigidBody;
         public bool IsStatic { get; set; }
         

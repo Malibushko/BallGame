@@ -1818,7 +1818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _positionOffset: {x: 0, y: 8, z: -5}
   _rotationOffset: {x: 60, y: 0, z: 0}
-  _speed: 1
+  _speed: 0.1
 --- !u!1 &1917154009
 GameObject:
   m_ObjectHideFlags: 0
@@ -2152,8 +2152,8 @@ MonoBehaviour:
   - {fileID: 2044267515}
   - {fileID: 1917154010}
   - {fileID: 1400265714}
-  - {fileID: 1289820213}
   - {fileID: 1877441410}
+  - {fileID: 1289820213}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:

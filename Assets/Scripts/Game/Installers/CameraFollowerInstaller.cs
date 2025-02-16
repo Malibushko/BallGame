@@ -13,11 +13,9 @@ namespace Game.Installers
         
         public override void InstallBindings()
         {
-            var player = Container.Resolve<IPlayer>();
-
             Container.BindInterfacesAndSelfTo<CameraFollowerService>()
                 .AsSingle()
-                .WithArguments(player, _positionOffset, _rotationOffset, _speed);
+                .WithArguments(_positionOffset, _rotationOffset, _speed);
         }
     }
 }

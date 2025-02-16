@@ -11,12 +11,11 @@ namespace Game.Installers
 
         public override void InstallBindings()
         {           
-            var player = Container.InstantiatePrefabForComponent<Player.Player>(_playerPrefab);
+            var player = Container.InstantiatePrefabForComponent<PlayerBehaviour>(_playerPrefab);
             player.transform.position = _spawnPoint.position;
             
             Container
-                .Bind<IPlayer>()
-                .To<Player.Player>()
+                .Bind<PlayerBehaviour>()
                 .FromInstance(player)
                 .AsSingle();
         }
