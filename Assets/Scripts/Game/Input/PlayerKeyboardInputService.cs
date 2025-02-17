@@ -9,9 +9,8 @@ namespace Input
 {
     public class PlayerKeyboardInputService : IPlayerInputService
     {
-        public ReactiveProperty<Vector3> Movement { get; } = new();
-        
         public Action<Vector3> OnInteractionBegin { get; set; }
+        public Action<Vector3> OnInteractionChange { get; set; }
         public Action<Vector3> OnInteractionEnd { get; set; }
         
         private IInputService _inputService;
@@ -92,7 +91,7 @@ namespace Input
             else if (key == _config.VerticalAxisKeys.Bottom)
                 movement = Vector2.down;
             
-            Movement.Value += new Vector3(movement.x, 0, movement.y);
+            // Movement.Value += new Vector3(movement.x, 0, movement.y);
             
             if (!isMoving && _isMoving)
             {

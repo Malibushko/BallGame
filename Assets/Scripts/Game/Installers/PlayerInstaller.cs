@@ -31,6 +31,8 @@ namespace Game.Installers
             Container.BindInterfacesAndSelfTo<PlayerController>()
                 .AsSingle()
                 .WithArguments(controllerConfig);
+            Container.BindInterfacesAndSelfTo<Player.Player>()
+                .AsSingle();
         }
     }
 }

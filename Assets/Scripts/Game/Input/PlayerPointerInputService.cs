@@ -9,15 +9,16 @@ namespace Input
 {
     public class PlayerPointerInputService : IPlayerInputService
     {
-        public ReactiveProperty<Vector3> Movement { get; } = new();
-        
         public Action<Vector3> OnInteractionBegin { get; set; }
+        
+        public Action<Vector3> OnInteractionChange { get; set; }
         public Action<Vector3> OnInteractionEnd { get; set; }
         
         private IInputService _inputService;
         private ICameraService _cameraService;
         
-        private Vector3? _beginMousePosition;
+        private Vector3 _currentPosition = Vector3.zero;
+        private bool _isInteracting;
         
         [Inject]
         public void Construct(IInputService inputService, ICameraService cameraService)
@@ -33,6 +34,7 @@ namespace Input
                 _inputService.OnPointerPressed += OnPointerPressed;
                 _inputService.OnPointerReleased += OnPointerReleased;
                 _inputService.OnPointerMoved += OnPointerMoved;
+                _cameraService.OnCameraPositionChanged += OnCameraPositionChanged;
             }
         }
         
@@ -48,40 +50,50 @@ namespace Input
         
         private void OnPointerMoved(Vector2 position)
         {
-            UpdateMovement(position);
+            if (_isInteracting)
+            {
+                UpdateCurrentPosition(position);
+                OnInteractionChange?.Invoke(_currentPosition);
+            }
         }
         
         private void OnPointerReleased(Vector2 position)
         {
-            UpdateMovement(position);
-            if (_beginMousePosition.HasValue)
-                OnInteractionEnd?.Invoke(_beginMousePosition.Value + Movement.Value);
-            _beginMousePosition = null;
+            UpdateCurrentPosition(position);
+            
+            if (_isInteracting)
+                OnInteractionEnd?.Invoke(_currentPosition);
+            
+            _isInteracting = false;
         }
 
         private void OnPointerPressed(Vector2 position)
         {
-            UpdateMovement(position);
-            if (_beginMousePosition.HasValue)
-                OnInteractionBegin?.Invoke(_beginMousePosition.Value);
+            if (!_isInteracting)
+            {
+                _isInteracting = true;
+                UpdateCurrentPosition(position);
+                OnInteractionBegin?.Invoke(_currentPosition);   
+            }
         }
         
-        private void UpdateMovement(Vector2 position)
+        private void UpdateCurrentPosition(Vector2 position)
         {
             if (TryGetWorldPosition(position, out Vector3 worldPos))
             {
-                if (_beginMousePosition.HasValue)
-                {
-                    Movement.Value = worldPos - _beginMousePosition.Value;
-                }
-                else
-                {
-                    _beginMousePosition = worldPos;
-                    Movement.Value = Vector3.zero;
-                }
+                _currentPosition = worldPos;
             }
         }
 
+        private void OnCameraPositionChanged()
+        {
+            if (_isInteracting && _inputService.PointerPosition.HasValue)
+            {
+                UpdateCurrentPosition(_inputService.PointerPosition.Value);
+                OnInteractionChange?.Invoke(_currentPosition);
+            }
+        }
+        
         private bool TryGetWorldPosition(Vector2 position, out Vector3 worldPosition)
         {
             var ray = _cameraService.Camera.ScreenPointToRay(position);
