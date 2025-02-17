@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using Zenject;
+using static Game.Math.Math;
 
 namespace Game.Player
 {
     public class PlayerView : MonoBehaviour
     {
         [SerializeField] private GameObject _hitPrefab;
+        [SerializeField] private LayerMask _collisionLayerMask;
         
         private IPlayer _player;
         
@@ -26,11 +28,14 @@ namespace Game.Player
             }
         }
         
-        private void OnPlayerHit(Vector3 obj)
+        private void OnPlayerHit(Collision collision)
         {
             // TODO: move to factory
-            if (_hitPrefab != null)
-                Instantiate(_hitPrefab, transform.position, Quaternion.identity);
+            if (_hitPrefab != null && collision.contactCount > 0 && HasLayer(_collisionLayerMask, collision.gameObject.layer))
+            {
+                var contact = collision.GetContact(0);
+                Instantiate(_hitPrefab, contact.point, Quaternion.identity);
+            }
         }
     }
 }

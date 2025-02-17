@@ -310,7 +310,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c1c116664864f1d8fa293826927c1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitPrefab: {fileID: 0}
+  _hitPrefab: {fileID: 141433446842962269, guid: 9fe8f8b3288e45a44af36ff8aa04486e,
+    type: 3}
+  _collisionLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &3454225317576667980
 MonoBehaviour:
   m_ObjectHideFlags: 0

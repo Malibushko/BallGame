@@ -10,7 +10,7 @@ namespace Game.Player
         public Quaternion Rotation { get; }
         public Vector3 Velocity { get; }
         
-        public Action<Vector3> OnHit { get; set; }
+        public Action<Collision> OnHit { get; set; }
 
         public void Enable();
         public void Disable();

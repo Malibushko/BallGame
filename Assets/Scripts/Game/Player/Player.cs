@@ -14,7 +14,7 @@ namespace Game.Player
         public Quaternion Rotation => _playerMovementService.Rotation;
         public Vector3 Velocity => _physicsObject.Velocity;
         
-        public Action<Vector3> OnHit { get; set; }
+        public Action<Collision> OnHit { get; set; }
         
         private IPlayerMovementService _playerMovementService;
         private IPhysicsObject _physicsObject;
@@ -30,10 +30,9 @@ namespace Game.Player
             _physicsObject.CollisionEnter += OnCollisionEnter;
         }
 
-        private void OnCollisionEnter(Collision obj)
+        private void OnCollisionEnter(Collision collision)
         {
-            if (obj.contactCount > 0)
-                OnHit?.Invoke(obj.GetContact(0).point);
+            OnHit?.Invoke(collision);
         }
 
         public void Enable()
